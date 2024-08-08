@@ -19,6 +19,11 @@ num_data_points = st.sidebar.number_input('Number of Data Points', min_value=100
 # Read the closing prices CSV into a DataFrame
 closing_prices_df = pd.read_csv(closing_prices_path)
 
+# Ensure Date column is in datetime format and sorted in ascending order
+closing_prices_df['Date'] = pd.to_datetime(closing_prices_df['Date'])
+closing_prices_df.sort_values('Date', inplace=True)
+closing_prices_df.set_index('Date', inplace=True)
+
 # Calculate daily returns
 closing_prices_df.set_index('Date', inplace=True)
 daily_returns_df = closing_prices_df.pct_change().dropna()
