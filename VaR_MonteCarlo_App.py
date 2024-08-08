@@ -84,8 +84,7 @@ ax.hist(simulation_df['Portfolio Return'], bins=50, alpha=0.75, color='blue', ed
 colors = {0.90: 'green', 0.95: 'orange', 0.99: 'red'}
 for level, var in portfolio_VaRs.items():
     ax.axvline(x=var, color=colors[level], linestyle='--', linewidth=2, label=f'VaR at {int(level*100)}%: {var:.4f}')
-
-portfolio_value = var * total_value
+    portfolio_value = var * total_value
 
 ax.set_title('Histogram of Portfolio Returns with VaR Levels')
 ax.set_xlabel('Portfolio Return')
@@ -99,7 +98,7 @@ st.pyplot(fig)
 # Analysis of VaR
 st.write("## Analysis of VaR at Different Confidence Levels")
 for level, var in portfolio_VaRs.items():
-    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_VaRs:,.0f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_VaRs:,.0f} in a single day.")
+    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_value:,.0f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_value:,.0f} in a single day.")
 
 # Display DataFrames to ensure they are read correctly and new columns are added
 st.write("## Closing Prices DataFrame")
