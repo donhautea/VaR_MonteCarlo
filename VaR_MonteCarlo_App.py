@@ -20,12 +20,11 @@ num_data_points = st.sidebar.number_input('Number of Data Points', min_value=100
 closing_prices_df = pd.read_csv(closing_prices_path)
 
 # Ensure Date column is in datetime format and sorted in ascending order
-#closing_prices_df['Date'] = pd.to_datetime(closing_prices_df['Date'])
-##closing_prices_df['Date'] = closing_prices_df.sort_values('Date', inplace=True)
-#closing_prices_df['Date'] = closing_prices_df.set_index('Date', inplace=True)
+closing_prices_df['Date'] = pd.to_datetime(closing_prices_df['Date'])
+closing_prices_df.sort_values('Date', inplace=True)
+closing_prices_df.set_index('Date', inplace=True)
 
 # Calculate daily returns
-closing_prices_df.set_index('Date', inplace=True)
 daily_returns_df = closing_prices_df.pct_change().dropna()
 
 # Ensure daily_returns_df has exactly the specified number of data points
@@ -68,13 +67,17 @@ for stock in portfolio_df['Stock']:
 simulation_df['Portfolio Return'] = simulation_df.sum(axis=1)
 
 # Calculate the Value at Risk (VaR) at different confidence levels
+# Using np.percentile which is equivalent to Excel's PERCENTILE.INC
 VaR_levels = [0.90, 0.95, 0.99]
 portfolio_VaRs = {level: np.percentile(simulation_df['Portfolio Return'], 100 * (1 - level)) for level in VaR_levels}
 
+# Adjust VaR values by total portfolio value
+adjusted_portfolio_VaRs = {level: var * total_value for level, var in portfolio_VaRs.items()}
+
 # Display VaR analysis
 st.write("## Value at Risk (VaR) Analysis at Different Confidence Levels")
-#for level, var in portfolio_VaRs.items():
-    #st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {var:.4f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {var:.4f} in a single day.")
+#for level, var in adjusted_portfolio_VaRs.items():
+#   st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {var:.4f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {var:.4f} in a single day.")
 
 # Plotting the histogram of Portfolio Returns with VaR levels
 fig, ax = plt.subplots(figsize=(12, 6))
@@ -84,7 +87,6 @@ ax.hist(simulation_df['Portfolio Return'], bins=50, alpha=0.75, color='blue', ed
 colors = {0.90: 'green', 0.95: 'orange', 0.99: 'red'}
 for level, var in portfolio_VaRs.items():
     ax.axvline(x=var, color=colors[level], linestyle='--', linewidth=2, label=f'VaR at {int(level*100)}%: {var:.4f}')
-    portfolio_value = var * total_value
 
 ax.set_title('Histogram of Portfolio Returns with VaR Levels')
 ax.set_xlabel('Portfolio Return')
@@ -97,8 +99,8 @@ st.pyplot(fig)
 
 # Analysis of VaR
 st.write("## Analysis of VaR at Different Confidence Levels")
-for level, var in portfolio_VaRs.items():
-    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_value:,.0f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_value:,.0f} in a single day.")
+for level, var in adjusted_portfolio_VaRs.items():
+    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:,.0f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {var:,.0f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {var:,.0f} in a single day.")
 
 # Display DataFrames to ensure they are read correctly and new columns are added
 st.write("## Closing Prices DataFrame")
