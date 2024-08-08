@@ -99,7 +99,7 @@ st.pyplot(fig)
 # Analysis of VaR
 st.write("## Analysis of VaR at Different Confidence Levels")
 for level, var in portfolio_VaRs.items():
-    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_value:.4f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_value:.4f} in a single day.")
+    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_value:,.0f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_value:,.0f} in a single day.")
 
 # Display DataFrames to ensure they are read correctly and new columns are added
 st.write("## Closing Prices DataFrame")
