@@ -70,6 +70,7 @@ simulation_df['Portfolio Return'] = simulation_df.sum(axis=1)
 # Calculate the Value at Risk (VaR) at different confidence levels
 VaR_levels = [0.90, 0.95, 0.99]
 portfolio_VaRs = {level: np.percentile(simulation_df['Portfolio Return'], 100 * (1 - level)) for level in VaR_levels}
+portfolio_value = portfolio_VaRs * portfolio_df['Market Value'].sum()
 
 # Display VaR analysis
 st.write("## Value at Risk (VaR) Analysis at Different Confidence Levels")
@@ -97,7 +98,7 @@ st.pyplot(fig)
 # Analysis of VaR
 st.write("## Analysis of VaR at Different Confidence Levels")
 for level, var in portfolio_VaRs.items():
-    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {var:.4f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {var:.4f} in a single day.")
+    st.write(f"At the {int(level*100)}% confidence level, the Value at Risk (VaR) is {var:.4f}. This means that there is a {int(level*100)}% chance that the portfolio will not lose more than {portfolio_value:.4f} in a single day. Conversely, there is a {100 - int(level*100)}% chance that the portfolio will lose more than {portfolio_value:.4f} in a single day.")
 
 # Display DataFrames to ensure they are read correctly and new columns are added
 st.write("## Closing Prices DataFrame")
