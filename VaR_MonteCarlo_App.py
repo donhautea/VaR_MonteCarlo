@@ -71,10 +71,7 @@ simulation_df['Portfolio Return'] = simulation_df.sum(axis=1)
 VaR_levels = [0.90, 0.95, 0.99]
 portfolio_VaRs = {level: np.percentile(simulation_df['Portfolio Return'], 100 * (1 - level)) for level in VaR_levels}
 
-# Calculate the total market value of the portfolio
-total_market_value = portfolio_df['Market Value'].sum()
-
-portfolio_value = portfolio_VaRs * total_market_value
+portfolio_value = portfolio_VaRs * total_value
 
 # Display VaR analysis
 st.write("## Value at Risk (VaR) Analysis at Different Confidence Levels")
