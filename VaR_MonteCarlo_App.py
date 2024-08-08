@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 st.set_page_config(layout="wide")
 
 # Define the file paths
-closing_prices_path = "D:\\IMS_Project\\montecarlo\\closingprices.csv"
-portfolio_path = "D:\\IMS_Project\\montecarlo\\portfolio.csv"
+closing_prices_path = "closingprices.csv"
+portfolio_path = "portfolio.csv"
 
 # Sidebar for user input
 st.sidebar.header('Monte Carlo Simulation Settings')
