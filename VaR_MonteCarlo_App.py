@@ -86,7 +86,7 @@ ax.hist(simulation_df['Portfolio Return'], bins=50, alpha=0.75, color='blue', ed
 # Add vertical lines for VaR levels with different colors
 colors = {0.90: 'green', 0.95: 'orange', 0.99: 'red'}
 for level, var in portfolio_VaRs.items():
-    ax.axvline(x=var, color=colors[level], linestyle='--', linewidth=2, label=f'VaR at {int(level*100)}%: {var:.4f}')
+    ax.axvline(x=var, color=colors[level], linestyle='--', linewidth=2, label=f'VaR at {int(level*100)}%: {var*100:.4f}%')
 
 ax.set_title('Histogram of Portfolio Returns with VaR Levels')
 ax.set_xlabel('Portfolio Return')
