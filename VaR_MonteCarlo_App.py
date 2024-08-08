@@ -71,8 +71,6 @@ simulation_df['Portfolio Return'] = simulation_df.sum(axis=1)
 VaR_levels = [0.90, 0.95, 0.99]
 portfolio_VaRs = {level: np.percentile(simulation_df['Portfolio Return'], 100 * (1 - level)) for level in VaR_levels}
 
-portfolio_value = portfolio_VaRs * total_value
-
 # Display VaR analysis
 st.write("## Value at Risk (VaR) Analysis at Different Confidence Levels")
 #for level, var in portfolio_VaRs.items():
@@ -86,6 +84,8 @@ ax.hist(simulation_df['Portfolio Return'], bins=50, alpha=0.75, color='blue', ed
 colors = {0.90: 'green', 0.95: 'orange', 0.99: 'red'}
 for level, var in portfolio_VaRs.items():
     ax.axvline(x=var, color=colors[level], linestyle='--', linewidth=2, label=f'VaR at {int(level*100)}%: {var:.4f}')
+
+portfolio_value = var * total_value
 
 ax.set_title('Histogram of Portfolio Returns with VaR Levels')
 ax.set_xlabel('Portfolio Return')
